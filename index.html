@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ECHO - Interfaz de Recuperación</title>
+    <style>
+        body { background: #050505; color: #00ff41; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #terminal { width: 80%; max-width: 800px; border: 1px solid #00ff41; padding: 20px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.2); background: rgba(0, 0, 0, 0.9); }
+        .typewriter { overflow: hidden; border-right: .15em solid #00ff41; white-space: pre-wrap; margin-bottom: 20px; animation: blink-caret .75s step-end infinite; }
+        .option { display: block; background: transparent; color: #00ff41; border: 1px solid #00ff41; padding: 10px; margin: 10px 0; cursor: pointer; text-align: left; width: 100%; transition: all 0.3s; }
+        .option:hover { background: #00ff41; color: #000; }
+        #puzzle-input { background: transparent; border: none; border-bottom: 1px solid #00ff41; color: #00ff41; font-family: inherit; font-size: 1.2rem; width: 80%; outline: none; margin-top: 10px; }
+        #submit-answer { background: #00ff41; color: #000; border: none; padding: 5px 15px; cursor: pointer; font-family: inherit; font-weight: bold; }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #00ff41; } }
+    </style>
+</head>
+<body>
+
+<div id="terminal">
+    <div id="content" class="typewriter">Cargando protocolo ECHO...</div>
+    <div id="puzzle-area" style="display:none;">
+        <p id="puzzle-text"></p>
+        <input type="text" id="puzzle-input" placeholder="Escribe tu respuesta..." autofocus>
+        <!-- CAMBIO 1: Añadimos el botón que faltaba -->
+        <button id="submit-answer">ENVIAR</button> 
+    </div>
+    <div id="options"></div>
+</div>
+
+<script>
+const API_URL = "http://192.168.1.137:8000/capitulo/";
+const VALIDAR_URL = "http://192.168.1.137:8000/validar/";
+
+async function loadChapter(id) {
+    try {
+        const response = await fetch(`${API_URL}${id}`);
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        
+        const data = await response.json();
+
+        // 1. Limpiar interfaz
+        document.getElementById('options').innerHTML = '';
+        const contentDiv = document.getElementById('content');
+        
+        // 2. Título y Contenido
+        contentDiv.innerText = `[CAPÍTULO ${id}: ${data.titulo}]\n\n`;
+        typewriter(data.contenido);
+
+        // 3. Manejar acertijos
+        const puzzleArea = document.getElementById('puzzle-area');
+        if (data.acertijo) {
+            puzzleArea.style.display = 'block';
+            document.getElementById('puzzle-text').innerText = `DESAFÍO: ${data.acertijo}`;
+            
+            const input = document.getElementById('puzzle-input');
+            input.value = '';
+            input.focus();
+
+            // CAMBIO 2: Escuchar la tecla Enter
+            input.onkeypress = (e) => {
+                if (e.key === 'Enter') checkAnswer(id);
+            };
+
+            // Conectar el botón de enviar
+            document.getElementById('submit-answer').onclick = () => checkAnswer(id);
+        } else {
+            puzzleArea.style.display = 'none';
+        }
+
+        // 4. Crear botones de decisiones
+        data.opciones.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option';
+            btn.innerText = `> ${opt.texto}`;
+            btn.onclick = () => loadChapter(opt.destino);
+            document.getElementById('options').appendChild(btn);
+        });
+
+    } catch (error) {
+        console.error("Fallo en la matriz:", error);
+        // Solo mostramos el error si el contenido está vacío
+        if(document.getElementById('content').innerText.length < 30) {
+            document.getElementById('content').innerText = ">> [ERROR CRÍTICO]: No se pudo conectar con el núcleo.";
+        }
+    }
+}
+
+function typewriter(text) {
+    const contentDiv = document.getElementById('content');
+    let i = 0;
+    const interval = setInterval(() => {
+        contentDiv.innerText += text.charAt(i);
+        i++;
+        if (i >= text.length) clearInterval(interval);
+    }, 30);
+}
+
+async function checkAnswer(id) {
+    const input = document.getElementById('puzzle-input');
+    const respuesta = input.value;
+    
+    if (!respuesta) return;
+
+    try {
+        const response = await fetch(`${VALIDAR_URL}${id}?respuesta=${encodeURIComponent(respuesta)}`);
+        const data = await response.json();
+
+        if (data.status === "success") {
+            alert(">> ACCESO CONCEDIDO: " + data.mensaje);
+            // Opcional: saltar al siguiente capítulo si la respuesta es correcta
+            // loadChapter(id + 1); 
+        } else {
+            alert(">> ACCESO DENEGADO: Respuesta incorrecta.");
+            input.value = '';
+            input.focus();
+        }
+    } catch (error) {
+        alert(">> ERROR: Fallo en el módulo de validación.");
+    }
+}
+
+loadChapter(1);
+</script>
+</body>
+</html>
