@@ -11,7 +11,7 @@
 <div align="center">
   <br />
   <a href="https://echo-cyberpunk.vercel.app/" target="_blank">
-    <img src="https://img.shields.io/badge/%E2%96%B6_LIVE_DEMO-%F0%9F%9F%A2_EJECUTAR_JUEGO-00ff00?style=for-the-badge&logo=vercel&logoColor=black&labelColor=000000" alt="Live Demo" height="50">
+    <img src="https://img.shields.io/badge/%E2%96%B6_EJECUTAR_JUEGO-00ff00?style=for-the-badge&logo=vercel&logoColor=black" alt="Live Demo" height="50">
   </a>
   <br />
   <sub><i>Nota: El juego requiere que el clúster de servidores de backend domésticos esté encendido para procesar los acertijos.</i></sub>
