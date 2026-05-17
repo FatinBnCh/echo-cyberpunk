@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     allowedHosts: [
       '.trycloudflare.com',
-      'gone-along-eastern-stands.trycloudflare.com'
+      'activated-attach-density-bracket.trycloudflare.com'
     ]
   }
 })
