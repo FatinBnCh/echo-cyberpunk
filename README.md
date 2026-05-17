@@ -52,7 +52,7 @@ El proyecto se divide en una arquitectura desacoplada moderna (*Frontend / Backe
 Una de las piezas clave de este proyecto es su infraestructura de servidores híbrida. El entorno se aloja de forma distribuida combinando la computación en la nube y el auto-alojamiento local (*self-hosting*):
 
 ```text
-       [ PROFESORES / JUGADORES ]
+             [ JUGADORES ]
                    │
                    ▼ (Acceso Web Público)
        ┌────────────────────────┐
@@ -79,9 +79,9 @@ Una de las piezas clave de este proyecto es su infraestructura de servidores hí
 │  │                                            │          │  │
 │  │               ┌────────────────────────────┴───────┐  │  │
 │  │               ▼                                    ▼  │  │
-│  │  ┌────────────────────────┐            ┌────────────────┐│  │
-│  │  │ Contenedor: API Python │ ────────▶  │Contenedor: SQL ││  │
-│  │  │ (FastAPI App Engine)   │            │(Data Engine)   ││  │
-│  │  └────────────────────────┘            └────────────────┘│  │
+│  │  ┌────────────────────────┐        ┌────────────────┐ │  │
+│  │  │ Contenedor: API Python │ ────▶ │Contenedor: SQL │ │  │
+│  │  │ (FastAPI App Engine)   │        │(Data Engine)   │ │  │
+│  │  └────────────────────────┘        └────────────────┘ │  │
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
