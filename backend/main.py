@@ -44,6 +44,7 @@ def leer_capitulo(id_capitulo: int):
 
             # 4. Construir el objeto de datos
             data = {
+                "id": id_capitulo,
                 "titulo": res_cap.titulo,
                 "contenido": res_cap.contenido,
                 "acertijo": res_acertijo.pregunta if res_acertijo else None,
@@ -72,5 +73,13 @@ def validar_capitulo(id_capitulo: int, respuesta: str):
         ).fetchone()
         
         if res and respuesta.strip().lower() == str(res.respuesta_correcta).lower():
-            return {"status": "success", "mensaje": "Acceso concedido"}
+            # Buscamos en la tabla decisiones a dónde debe ir este capítulo después de ganar
+            next_step = conn.execute(
+                text("SELECT id_capitulo_destino FROM decisiones WHERE id_capitulo_origen = :id LIMIT 1"),
+                {"id": id_capitulo}
+            ).fetchone()
+            
+            siguiente = next_step.id_capitulo_destino if next_step else id_capitulo + 1
+            return {"status": "success", "siguiente_id": siguiente}
+            
         return {"status": "error", "mensaje": "Respuesta incorrecta"}

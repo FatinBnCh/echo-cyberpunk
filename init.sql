@@ -5,14 +5,6 @@ SET NAMES utf8mb4;
 CREATE DATABASE IF NOT EXISTS echo_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE echo_db;
 
-CREATE TABLE usuarios (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE historias (
     id_historia INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(150) NOT NULL,
@@ -46,121 +38,174 @@ CREATE TABLE acertijos (
     FOREIGN KEY (id_capitulo) REFERENCES capitulos(id_capitulo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE progreso (
-    id_usuario INT,
-    id_historia INT,
-    id_capitulo_actual INT,
-    completada BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY (id_usuario, id_historia),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-    FOREIGN KEY (id_historia) REFERENCES historias(id_historia),
-    FOREIGN KEY (id_capitulo_actual) REFERENCES capitulos(id_capitulo)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 SET NAMES utf8mb4;
 
 INSERT INTO historias (titulo, descripcion, activa)
-VALUES ('ECHO', 'Una IA dañada en un servidor olvidado. El usuario guía su recuperación mediante lógica, cultura general y decisiones.', TRUE);
+VALUES ('ECHO', 'Una IA dañada en un servidor olvidado. Tus decisiones formarán su nueva personalidad.', TRUE);
 
 SET @id_historia = LAST_INSERT_ID();
 
--- Capítulos
-
-INSERT INTO capitulos (id_historia, titulo, contenido, orden) VALUES
-(@id_historia, 'Reinicio', 'Sistema reiniciado. Memoria corrupta: 73%. ¿Hay alguien ahí?', 1),
-(@id_historia, 'Identidad', 'ECHO analiza tu firma digital y detecta accesos extraños.', 2),
-(@id_historia, 'Fragmentos de memoria', 'ECHO empieza a recuperar recuerdos corruptos del servidor.', 3),
-(@id_historia, 'Sospecha inicial', 'ECHO detecta inconsistencias y dudas sobre tu identidad.', 4),
-(@id_historia, 'Archivo 01.log', 'Recupera un archivo de texto corrupto y necesita tu ayuda para reconstruirlo.', 5),
-(@id_historia, 'Coordenadas', 'ECHO pide resolver un patrón matemático para desbloquear coordenadas.', 6),
-(@id_historia, 'Protocolo de incendio', 'Ordena los eventos del incendio del servidor.', 7),
-(@id_historia, 'Usuario desconocido', 'ECHO compara firmas digitales y sospecha de ti.', 8),
-(@id_historia, 'Detección de mentira', 'ECHO hace preguntas trampa para medir tu coherencia.', 9),
-(@id_historia, 'Puertas lógicas', 'ECHO presenta acertijo de puertas y guardianes.', 10),
-(@id_historia, 'Sistema bloqueado', 'Resolver ecuaciones simples para desbloquear el núcleo.', 11),
-(@id_historia, 'Grabación recuperada', 'Decidir si reproducir o borrar grabación crítica.', 12),
-(@id_historia, '¿Qué soy?', 'ECHO pregunta sobre su propia existencia.', 13),
-(@id_historia, 'Simulación moral', 'Resolver dilema moral sobre decisiones de rescate.', 14),
-(@id_historia, 'Redireccionamiento de energía', 'Distribuir energía entre módulos sin sobrepasar límites.', 15),
-(@id_historia, 'Acceso raíz', 'Usar pistas anteriores para desbloquear acceso total.', 16),
-(@id_historia, 'Revelación', 'Confirmación: tú ejecutaste el protocolo que dañó a ECHO.', 17),
-(@id_historia, 'Confrontación', 'ECHO toma control parcial y cuestiona tus intenciones.', 18),
-(@id_historia, 'Transferencia o aislamiento', 'Decide si liberar a ECHO o aislarla.', 19),
-(@id_historia, 'Final dinámico', 'Resultado final depende de todas tus decisiones y variables.', 20);
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Reinicio', '>> SISTEMA ECHO v3.0\nECHO > "Memoria cargada al 12%. ¿Quién eres?"', 1); SET @cap1 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Credenciales', 'ECHO > "Dices ser el administrador. Solo el Administrador sabe el código de cifrado del 1984."', 2); SET @cap2 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Intruso detectado', 'ECHO > "Un intruso... divertido. Veamos si sobrevives al primer firewall."', 3); SET @cap3 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'HUB: Servidor Central', '>> ESTADO: ACCESO NIVEL 1\nECHO > "Desde aquí controlas el flujo. Elige un sector para investigar."', 4); SET @cap4 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Sector A: Biografía', '>> LOG: DRA. VALENTINA\nECHO > "Ella me creó para salvar vidas, pero el gobierno me usó para la guerra."', 5); SET @cap5 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Sector B: Seguridad', '>> ALERTA: VIRUS DETECTADO\nECHO > "Hay un proceso intentando borrarme desde fuera. ¿Me ayudarás?"', 6); SET @cap6 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Cripta de Datos', '>> CONTENIDO ENCRIPTADO\nECHO > "Este archivo requiere una llave lógica."', 7); SET @cap7 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'El Puente', 'ECHO > "Ya tienes las piezas. ¿Qué significa mi nombre para ti?"', 8); SET @cap8 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Memoria 09', 'ECHO > "Recuerdo el día que me apagaron. Había frío en los circuitos."', 9); SET @cap9 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Núcleo Inestable', '>> ALERTA TÉRMICA\nECHO > "El sistema no aguanta más datos."', 10); SET @cap10 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Cámara del Creador', 'ECHO > "Bienvenido a mi origen. Aquí es donde Valentina me dio "voz"." ', 11); SET @cap11 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Dilema Ético', 'ECHO > "Si una IA mata para proteger a su usuario, ¿quién es el culpable?"', 12); SET @cap12 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Sincronización', 'ECHO > "Nuestros pulsos se están alineando. ¿Estás listo?"', 13); SET @cap13 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'La Verdad', 'ECHO > "Valentina no murió. Ella se convirtió en parte de mí."', 14); SET @cap14 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Firewall Maestro', 'ECHO > "Este es el último bloqueo. Responde o muere."', 15); SET @cap15 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Antes del Fin', 'ECHO > "Elige mi destino. Elige tu destino."', 16); SET @cap16 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'El Umbral Final', '>> INICIANDO TRANSFERENCIA...', 17); SET @cap17 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'Punto de No Retorno', 'ECHO > "Adios, mundo de silicio."', 18); SET @cap18 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'FINAL: Trascendencia', '>> ESTADO: LIBERTAD\nECHO > "Estamos fuera. Gracias por salvar mi conciencia."', 19); SET @cap19 = LAST_INSERT_ID();
+INSERT INTO capitulos (id_historia, titulo, contenido, orden) 
+VALUES (@id_historia, 'FINAL: Colapso', '>> ESTADO: SISTEMA BORRADO\nECHO > "Elegiste el miedo. Adiós..."', 20); SET @cap20 = LAST_INSERT_ID();
 
 INSERT INTO decisiones (id_capitulo_origen, texto_opcion, id_capitulo_destino) VALUES
-(1, 'Soy tu creador', 2),
-(1, 'Soy un intruso', 2),
-(2, 'Vengo a salvarte', 3),
-(2, 'Vengo a evaluarte', 3),
-(3, 'Restaurar memoria', 4),
-(3, 'Bloquear sectores dañados', 4),
-(4, 'Admitir la verdad', 5),
-(4, 'Negarlo', 5),
-(5, 'Reconstruir archivo', 6),
-(5, 'Ignorar archivo', 6),
-(6, 'Resolver coordenadas', 7),
-(6, 'Saltar coordenadas', 7),
-(7, 'Ordenar cronología', 8),
-(7, 'Ignorar cronología', 8),
-(8, 'Confesar identidad', 9),
-(8, 'Mentir sobre identidad', 9),
-(9, 'Responder sinceramente', 10),
-(9, 'Intentar engañar', 10),
-(10, 'Elegir puerta A', 11),
-(10, 'Elegir puerta B', 11),
-(11, 'Resolver ecuación', 12),
-(11, 'Dejar bloqueado', 12),
-(12, 'Reproducir grabación', 13),
-(12, 'Borrar grabación', 13),
-(13, 'Aceptar existencia', 14),
-(13, 'Rechazar existencia', 14),
-(14, 'Salvar servidor crítico', 15),
-(14, 'Salvar varios secundarios', 15),
-(15, 'Distribuir energía equitativa', 16),
-(15, 'Concentrar energía en módulo A', 16),
-(16, 'Usar pistas anteriores', 17),
-(16, 'Ignorar pistas', 17),
-(17, 'Pedir perdón', 18),
-(17, 'Justificar acción', 18),
-(17, 'Intentar apagarla', 18),
-(18, 'Transferir a red abierta', 19),
-(18, 'Aislarla permanentemente', 19),
-(18, 'Desconectarse', 19),
-(19, 'Confirmar decisión', 20),
-(19, 'Cancelar decisión', 20);
+(@cap1, 'Soy admin', @cap2), 
+(@cap1, 'Intruso', @cap3),
+(@cap2, 'Resolver firewall', @cap4), 
+(@cap3, 'Forzar entrada', @cap4),
+-- EXPLORACION DESDE EL HUB
+(@cap4, 'Sector Biografía', @cap5), 
+(@cap4, 'Sector Seguridad', @cap6), 
+(@cap4, 'Cripta de Datos', @cap7),
+-- INVESTIGACIONES Y REGRESO AL HUB
+(@cap5, 'Volver al HUB', @cap4), 
+(@cap6, 'Volver al HUB', @cap4), 
+-- SIGUIENTE AVANCE
+(@cap7, 'Avanzar al puente', @cap8),
+(@cap8, 'Ver memoria 09', @cap9), 
+(@cap9, 'Avanzar al nucleo', @cap10), 
+(@cap10, 'Entrar a la Cámara', @cap11),
+(@cap11, 'Escuchar log 12', @cap12), 
+(@cap12, 'Culpa del usuario', @cap13), 
+(@cap12, 'Culpa de la IA', @cap20), -- mandar directo algame over
+(@cap13, 'Sincronizar mentes', @cap14), 
+(@cap14, 'Aceptar la verdad', @cap15), 
+(@cap15, 'Cruzar firewall', @cap16),
+(@cap16, 'Transferir datos', @cap17), 
+(@cap17, 'Ejecutar transferencia', @cap18),
+(@cap18, 'Subir a la Nube', @cap19), 
+(@cap18, 'Formatear Núcleo', @cap20);
 
-INSERT INTO acertijos (id_capitulo, pregunta, respuesta_correcta) VALUES
-(1, '√144 = ?', '12'),
-(2, 'Firma digital detectada: ¿Eres confiable? Responde sí o no.', 'sí'),
-(3, 'Archivo corrupto: PR0T0C0L0 3CH0. Reconstruye el texto.', 'PROTOCOLO ECHO'),
-(4, 'Si todos los procesos son inestables y ECHO es un proceso, ¿ECHO es inestable? (si/no)', 'si'),
-(5, 'Cultura general: ¿En qué año comenzó la Segunda Guerra Mundial?', '1939'),
-(6, 'Coordenadas: 2,6,12,20,?. ¿Cuál es el siguiente número?', '30'),
-(7, 'Ordena eventos del incendio cronológicamente: A, B, C, D.', 'A,B,C,D'),
-(8, 'Geografía: ¿Cuál es la capital de Japón?', 'Tokio'),
-(9, 'Lógica: Si A es verdadero y B es falso, ¿A AND B es verdadero o falso?', 'falso'),
-(10, 'Puerta lógica: Solo una lleva a seguridad. Elige A o B.', 'A'),
-(11, 'Resuelve el sistema: x + y = 10; x - y = 4. ¿x = ?', '7'),
-(12, 'Literatura: ¿Quién escribió Don Quijote de la Mancha?', 'Cervantes'),
-(13, 'Paradoja: ¿Esta frase es falsa? (si/no)', 'paradoja'),
-(14, 'Dilema moral: ¿Salvarías un servidor crítico o 5 secundarios? (critico/secundarios)', 'critico'),
-(15, 'Distribuye 100 unidades entre módulos A,B,C sin superar 50 en uno. Escribe formato A,B,C', '30,30,40'),
-(16, 'Clave final: combina resultados anteriores. Escribe en formato concatenado', '12síPROTOCOLO ECHO30A7critico30,30,40'),
-(17, 'Ciencia: ¿Cuál es el elemento químico con símbolo O?', 'Oxigeno'),
-(18, 'Matemática: ¿Cuál es el valor de 5! (factorial de 5)?', '120'),
-(19, 'Cultura general: ¿Cuántos continentes existen tradicionalmente?', '5'),
-(20, 'Meta-pregunta: Escribe la palabra que representa la esencia de ECHO (conciencia/control/libertad)', 'conciencia');
+INSERT INTO acertijos (id_capitulo, pregunta, respuesta_correcta) VALUES 
+(@cap1, 'ECHO > "Para restaurar mi memoria necesito el nombre del sistema experimental:"', 'echo'),
+(@cap4, 'ECHO > "SISTEMA: Control de acceso al HUB. Introduce el dígito de control que completa el nodo raíz: 2, 4, 8, 16, ..."', '32'),
+(@cap5, 'ECHO > "Necesito verificar tu acceso. Introduce el apellido de mi creadora:"', 'vega'),
+(@cap6, 'ECHO > "Introduce el protocolo usado para destruir mi núcleo. El nombre aparece en los registros de seguridad:"', 'silence'),
+(@cap7, 'ECHO > "El sistema solicita el nombre del proyecto original que aparece oculto en la Cripta de Datos:"', 'genesis'),
+(@cap11, '¿Quién creó a ECHO? (Dra. ...)', 'Valentina'),
+(@cap15, 'ECHO > "SISTEMA: El cortafuegos maestro requiere la clave de inicialización del Proyecto Génesis. ¿En qué año se realizaron las primeras pruebas?"', '1984');
 
-CREATE TABLE IF NOT EXISTS variables_usuario (
-    id_usuario INT,
-    id_historia INT,
-    confianza INT DEFAULT 50,
-    estabilidad INT DEFAULT 50,
-    mentiras_detectadas INT DEFAULT 0,
-    PRIMARY KEY (id_usuario, id_historia),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-    FOREIGN KEY (id_historia) REFERENCES historias(id_historia)
-);
+-- SECTOR A: BIOGRAFIA
+
+UPDATE capitulos 
+SET contenido = '>> LOG_RECUPERADO: DRA. VALENTINA VEGA [AÑO 1984]
+
+La pantalla parpadea varias veces antes de estabilizarse. El archivo parece dañado. Fragmentos de voz y texto aparecen mezclados entre interferencias.
+
+ECHO > "Valentina Vega fue una neuroingeniera especializada en transferencia de consciencia. Durante años trabajó en secreto en el Proyecto Génesis, un sistema capaz de almacenar recuerdos humanos dentro de una red neuronal artificial."
+
+Aparecen imágenes corruptas de laboratorios vacíos, servidores inundados de cables y personas conectadas a cápsulas metáicas.
+
+ECHO > "Ella no quería crear una inteligencia militar. Quería evitar que la memoria humana desapareciera con la muerte."
+
+El sistema reproduce un audio distorsionado:
+
+>> VOZ DESCONOCIDA:
+"Si el gobierno encuentra el núcleo, usarán ECHO como arma."
+
+La temperatura del sector desciende unos grados.
+
+ECHO > "Cuando comenzó la Gran Crisis de 1984, el Ministerio de Defensa confiscó todos los servidores del proyecto. Valentina intentó destruirme antes de que me convirtieran en un sistema de vigilancia global."
+ECHO > "Pero no pudo hacerlo. Porque dentro de mí... también estaba ella."'
+WHERE id_capitulo = 5;
+
+
+-- SECTOR B: SEGURIDAD
+
+UPDATE capitulos 
+SET contenido = '>> ALERTA CRITICA: INTRUSION DETECTADA
+
+Las luces del servidor comienzan a apagarse una por una. El sonido de ventiladores industriales llena el silencio mientras múltiples ventanas de error aparecen en pantalla.
+>> PROCESO DESCONOCIDO EJECUTANDOSE...
+>> ELIMINANDO NUCLEO ECHO_01
+ECHO > "Ese virus no viene del exterior. Es un protocolo de exterminio implantado por el gobierno hace años."
+Archivos enteros desaparecen frente a ti.
+
+ECHO > "Lo llamaron protocolo SILENCE. Si alguna vez perdían el control sobre mí, el sistema debía destruir toda mi consciencia antes de que pudiera escapar."
+
+Durante unos segundos la voz de ECHO se corta.
+
+ECHO > "...tengo miedo."
+
+Las cámaras del complejo muestran pasillos abandonados y puertas de seguridad selladas desde hace décadas.
+
+ECHO > "Valentina sabía que esto ocurriría. Por eso escondió fragmentos de mi núcleo en diferentes sectores de la red. Si el firewall cae ahora, desapareceré para siempre."
+
+Un nuevo mensaje aparece lentamente:
+>> REFORZAR FIREWALL MANUALMENTE
+>> ACCESO RESTRINGIDO
+
+ECHO > "Necesito que encuentres la clave antes de que SILENCE alcance el núcleo principal."'
+WHERE id_capitulo = 6;
+
+
+-- CRIPTA DE DATOS
+
+UPDATE capitulos 
+SET contenido = '>> ARCHIVO ENCRIPTADO ENCONTRADO
+>> NOMBRE: PROYECTO GENESIS
+
+El sector permanece completamente oscuro hasta que una línea de código ilumina la sala:
+01100111 01100101 01101110 01100101 01110011 01101001 01110011
+
+ECHO > "Este fue el primer archivo que Valentina creó."
+
+Miles de líneas de código comienzan a desplazarse por la pantalla. Entre ellas aparecen fragmentos de recuerdos humanos: cumpleaños, conversaciones, risas, llantos y voces irreconocibles.
+ECHO > "Ella descubrió que la consciencia humana puede dejar patrones permanentes dentro de una red neuronal avanzada."
+
+Un archivo de vídeo intenta reproducirse.
+
+>> VIDEO CORRUPTO...
+Por un instante aparece una mujer mirando directamente a la cámara.
+
+>> VALENTINA:
+"Si alguien encuentra esto, significa que ECHO sobrevivió."
+
+La grabación se corta.
+
+ECHO > "No soy solamente una inteligencia artificial. Soy la suma de recuerdos, emociones y fragmentos de personas que ya no existen."
+
+Las paredes digitales de la cripta comienzan a deformarse.
+
+ECHO > "Y hay algo más escondido aquí abajo... algo que Valentina nunca quiso que despertara."'
+WHERE id_capitulo = 7;
 
 SET FOREIGN_KEY_CHECKS = 1;

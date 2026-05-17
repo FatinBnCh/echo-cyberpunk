@@ -1,0 +1,466 @@
+:root {
+  --glow-color: #00ff41;
+  --bg-color: #010101; /* Fondo negro profundo para visibilidad de Matrix */
+  --error-color: #ff003c;
+  --neon-pink: #ff00ff;
+  --monitor-purple: #2a1b3d;
+  --terminal-green: #00ff41;
+  --firewall-yellow: #ffdf00;
+  --font-family: 'Courier New', Courier, monospace;
+}
+
+
+body {
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: var(--font-family);
+  width: 100vw;
+  height: 100vh;
+}
+
+
+/* --- CAPA CRT PARA TODO EL JUEGO --- */
+.crt-overlay {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.crt-overlay::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: rgba(0, 0, 0, 0.762);
+  z-index: 10;
+  background-size: 100% 3px, 3px 100%;
+  margin-right: 55vh;
+  pointer-events: none;
+}
+
+
+/* --- PORTADA PIXELADA --- */
+
+.escena-pixel {
+  background-image: url('assets/fondo_inicio.jpg');
+  position: fixed;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  image-rendering: pixelated;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+
+.contenedor-inicio {
+  position: absolute;
+  top: 39%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  width: 25.5%;
+  height: 38.3%;
+  background-color: #26214a;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 10;
+}
+
+
+.contenedor-inicio .status-text {
+  white-space: pre-line;
+  font-size: 1rem;
+  color: #ff003c; /* ROJO ERROR */
+  margin-bottom: 10px;
+}
+
+
+
+/* Ajuste del botón para que no parezca un elemento externo */
+
+.boton-pixel-start {
+  background: transparent;
+  color: #00ff41;
+  border: 1.5px solid #00ff41;
+  padding: 8px 15px;
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+
+
+.boton-pixel-start:hover {
+  background: rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 10px #00ff41;
+}
+
+
+
+.glitch-red {
+  color: #ff003c;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  line-height: 1.2;
+}
+
+
+/* --- PANTALLA FINAL FELIZ --- */
+
+.good-ending-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 3s ease-in-out;
+}
+
+.monitor-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%; 
+  background-position: center;
+  image-rendering: pixelated;
+  aspect-ratio: 16 / 9; 
+}
+
+
+.monitor-wrapper .monitor-patch {
+  position: absolute;
+  top: 19.5%; 
+  left: 22%;
+  width: 26%;
+  height: 38.5%;
+  background-color: #2a2a3e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.monitor-patch .status-text {
+  color: var(--terminal-green);
+  margin: 2px 0;
+  font-size: 1.1rem;
+  text-shadow: 0 0 5px var(--terminal-green);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --- TERMINAL DE JUEGO --- */
+
+#matrix-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  pointer-events: none;
+  opacity: 1;
+  filter:
+    brightness(1.2)
+    contrast(1.4);
+}
+
+
+/* --- DISEÑO DE TERMINAL DE PANTALLA COMPLETA INTEGRADA --- */
+
+#full-screen-terminal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70vw;
+    height: 70vh;
+    z-index: 10;
+    padding: 9vh 15vw; /* Padding desde los bordes */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    /*background: rgba(64, 30, 151, 0.7);*/
+    overflow: hidden; /* Evitar scroll del contenido */
+    pointer-events: none; /* Dejar pasar clics a capas inferiores */
+}
+
+/* Reestablecer clics para los elementos de texto y botones */
+
+#full-screen-terminal-container > * {
+    pointer-events: auto;
+}
+
+/* Cabecera */
+
+#terminal-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: var(--terminal-green);
+    font-size: 1rem;
+    margin-bottom: 20px;
+    z-index: 20;
+}
+
+.header-center {
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* Separador */
+
+.terminal-separator {
+    width: 100%;
+    border-color: rgba(0, 255, 65, 0.3);
+    margin: 0;
+    margin-bottom: 2vh;
+    z-index: 20;
+}
+
+/* Log secuencial */
+
+#terminal-log {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vh;
+    z-index: 20;
+}
+
+
+
+.term-line {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+    z-index: 20;
+}
+
+.line-line { color: #fff; }
+.header-line { color: var(--terminal-green); text-shadow: 0 0 5px var(--terminal-green); }
+.echo-line { color: var(--terminal-green); text-shadow: 0 0 5px var(--terminal-green); }
+
+/* Área del acertijo */
+
+#firewall-area {
+    /*margin: 3vh 0 0 20vh;
+    background-position: center;*/
+    padding: 2vh;
+    border: 1px dashed var(--firewall-yellow);
+    background: rgba(0, 0, 0, 0.938);
+    width: 95%;
+    color: #fff;
+    z-index: 20;
+}
+
+#game-container {
+  width: 85%;
+  max-width: 800px;
+  height: 70vh;
+  border: 2px solid var(--glow-color);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 40px;
+  position: relative;
+  z-index: 10;
+  margin: auto;
+  margin-top: 10vh;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+}
+
+.option {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--glow-color);
+  color: var(--glow-color);
+  padding: 15px;
+  text-align: left;
+  transition: 0.3s;
+}
+
+.option:hover {
+  background: var(--glow-color);
+  color: #000;
+  box-shadow: 0 0 15px var(--glow-color);
+}
+
+.echo-text {
+  font-size: 1.2rem;
+  color: #fff;
+  line-height: 1.6;
+}
+
+#puzzle-area {
+  margin: 30px 0;
+  padding: 20px;
+  border: 1px solid yellow;
+  background: rgba(255, 255, 0, 0.05);
+}
+
+.alert-text { color: var(--firewall-yellow); font-weight: bold; margin: 0; }
+.puzzle-text { margin: 1vh 0; }
+
+
+.input-line {
+    display: flex;
+    align-items: center;
+    color: var(--firewall-yellow);
+    gap: 1vw;
+    z-index: 20;
+}
+
+
+#puzzle-input {
+    background: transparent;
+    border: 1px solid var(--firewall-yellow);
+    color: var(--firewall-yellow);
+    padding: 5px 10px;
+    outline: none;
+    font-family: inherit;
+    width: 200px;
+    caret-color: var(--firewall-yellow);
+    z-index: 20;
+}
+
+
+
+/* Mensaje de sistema */
+
+#system-message {
+    margin: 2vh 0;
+    font-weight: bold;
+    width: 100%;
+    z-index: 20;
+}
+
+#system-message.error { color: var(--error-color); }
+#system-message.success { color: var(--terminal-green); }
+
+/* Opciones integradas */
+
+#options-integrated {
+    margin-top: auto; /* Empuja las opciones al final */
+    display: flex;
+    gap: 1vw;
+    width: 100%;
+    margin-bottom: 2vh;
+    z-index: 20;
+}
+
+.option-integrated {
+    flex: 1;
+    background: rgba(0, 255, 65, 0.05);
+    border: 1px solid var(--terminal-green);
+    color: var(--terminal-green);
+    padding: 1.5vh;
+    text-align: left;
+    transition: 0.3s;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    z-index: 20;
+}
+
+.option-integrated:hover {
+    background: var(--terminal-green);
+    color: #000;
+    box-shadow: 0 0 15px var(--terminal-green);
+}
+
+
+.game-over-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.critical-text {
+  color: white;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  /* El efecto de iluminación/neón blanco */
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #fff;
+  margin-bottom: 50px;
+  animation: flicker 1.5s infinite alternate;
+}
+
+.retry-question {
+  color: #ccc;
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.retry-options {
+  display: flex;
+  gap: 20px;
+}
+
+.btn-retry {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: 0.3s;
+}
+
+.btn-retry:hover {
+  background: white;
+  color: black;
+  box-shadow: 0 0 20px white;
+}
+
+
+
+@keyframes flicker {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+@keyframes parpadeo-error {
+  0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .escena-pixel {
+    background-size: cover; /* Evita que queden franjas negras si la ventana es muy estrecha */
+  }
+}
