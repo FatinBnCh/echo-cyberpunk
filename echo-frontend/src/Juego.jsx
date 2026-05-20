@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import fondoFinalFeliz from '../src/assets/fondo_inicio.jpg';
 
-const API_URL = "https://conjunction-diesel-classes-happy.trycloudflare.com/capitulo/";
-const VALIDAR_URL = "https://conjunction-diesel-classes-happy.trycloudflare.com/validar/";
+const API_URL = "https://disks-relief-stage-keyword.trycloudflare.com/capitulo/";
+const VALIDAR_URL = "https://disks-relief-stage-keyword.trycloudflare.com/validar/";
 
 export default function Juego() {
   const canvasRef = useRef(null);

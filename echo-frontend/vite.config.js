@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     allowedHosts: [
       '.trycloudflare.com',
-      'conjunction-diesel-classes-happy.trycloudflare.com'
+      'disks-relief-stage-keyword.trycloudflare.com'
     ]
   }
 })
